@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by chris.bennett on 10/13/16.
  */
@@ -22,6 +24,7 @@ public class MyView extends View  {
     private Bitmap bitmap;
     private float x,y;
     private int radius;
+    private ArrayList<Circle> circles;
 
     private long lastMove=0;
 
@@ -35,6 +38,7 @@ public class MyView extends View  {
         x = 100;
         y = 100;
         radius = 50;
+        circles = new ArrayList<Circle>();
     }
 
     @Override
@@ -48,7 +52,12 @@ public class MyView extends View  {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawCircle(x,y,radius, p);
+        for(int i=0; i<circles.size();i++){
+            canvas.drawCircle(circles.get(i).x,circles.get(i).y,radius, p);
+
+        }
+
+
     }
 
 /*
@@ -62,6 +71,7 @@ public class MyView extends View  {
     public boolean onTouchEvent(MotionEvent event) {
         x = event.getX();
         y = event.getY();
+        circles.add(new Circle(x,y,50.0f));
         invalidate();
         return true;
     }
@@ -69,6 +79,21 @@ public class MyView extends View  {
     protected void startTouch(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+    class Circle{
+        public float x;
+        public float y;
+        public float r;
+        public float p;
+        //public float color;
+        public Circle (float x, float y, float r) {
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            //I don't this is right...
+            MyView.p = this.p;
+        }
+
     }
 
 
